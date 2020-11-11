@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import CornerBox from "../CornerBox";
+import PieCharts from "./PieCharts";
+import LineCharts from "./LineCharts";
 import styles from "./FlowCount.less";
 
 class FlowCount extends Component {
@@ -13,25 +15,25 @@ class FlowCount extends Component {
     },
     {
       title: "男女性别占比展示",
-      content: ["qwe123"]
+      content: <PieCharts />
     },
     {
       title: "年龄分段展示",
-      content: ["qwe123"]
+      content: <LineCharts/>
     },
   ]
   rightData = [
     {
       title: "工龄展示",
-      content: ["qwe123"]
+      content: <LineCharts />
     },
     {
       title: "职级分布和和占比",
-      content: ["qwe123"]
+      content: <PieCharts />
     },
     {
       title: "职类分布和占比",
-      content: ["qwe123"]
+      content: <PieCharts />
     },
   ]
   componentDidMount() {
@@ -51,13 +53,14 @@ class FlowCount extends Component {
         <div className={styles.content} style={{ height: window.innerHeight - 77 - 16 }}>
           <div className={styles.leftBox}>
             {this.leftData.map(item => {
-              const { content}=item
+              const { content, title}=item
               return (
-                <div>
+                <div key={title}>
                   <div className={styles.box}>
                     <CornerBox>
+                      <div className={styles.title}>{title}</div>
                       {content}
-                  </CornerBox>
+                    </CornerBox>
                   </div>
                   <div style={{ height: 30 }} />
                 </div>
@@ -66,11 +69,12 @@ class FlowCount extends Component {
           </div>
           <div className={styles.rightBox}>
             {this.rightData.map(item => {
-              const { content } = item
+              const { content, title } = item
               return (
-                <div>
+                <div key={title}>
                   <div className={styles.box}>
                     <CornerBox>
+                      <div className={styles.title}>{title}</div>
                       {content}
                     </CornerBox>
                   </div>
