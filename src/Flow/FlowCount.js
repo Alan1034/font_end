@@ -15,7 +15,7 @@ class FlowCount extends Component {
   }
 
   getData=async()=>{
-    console.log(window.hostProxy)
+    // console.log(window.hostProxy)
     const res =await fetch(`${window.hostProxy}/personnel/data/population`)
     const data = await res.json()
     if (`${data.errCode}`=== "0") {
@@ -29,7 +29,7 @@ class FlowCount extends Component {
   render() {
     // const { data = [] } = this.props;
     const {data} = this.state;
-    console.log(data)
+    // console.log(data)
     const leftData = [
       {
         title: "员工总数",

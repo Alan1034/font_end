@@ -7,7 +7,7 @@ class Main extends Component {
         return (
             <div className={style.main}>
                 <FlowCount />
-                <Map data={[]} />
+                <Map/>
             </div>
         );
     }
