@@ -37,25 +37,65 @@ class FlowCount extends Component {
       },
       {
         title: "男女性别占比展示",
-        content: <PieCharts />
+        content: <PieCharts 
+        data={[
+          { value: data.male, name: '男性' },
+          { value: data.female, name: '女性' },
+        ]}
+        name={"男女性别占比展示"}
+        />
       },
       {
         title: "年龄分段展示",
-        content: <LineCharts />
+        content: <LineCharts
+          data={Object.entries(data.age || {}).map((item) => {
+            const [name, value] = item
+            return {
+              value, name,
+            }
+          })}
+          name={"工龄展示"}
+          formatter={'{a}<br/>{b} 岁 {c} 人'}
+        />
       },
     ]
     const rightData = [
       {
         title: "工龄展示",
-        content: <LineCharts />
+        content: <LineCharts 
+          data={Object.entries(data.divisionAge || {}).map((item) => {
+            const [name, value] = item
+            return {
+              value, name,
+            }
+          })}
+          name={"工龄展示"}
+          formatter={'{a}<br/>{b} 年 {c} 人'}
+        />
       },
       {
         title: "职级分布和和占比",
-        content: <PieCharts />
+        content: <PieCharts 
+          data={Object.entries(data.payRank||{}).map((item)=>{
+            const [name,value]=item
+            return{
+              value, name,
+          }})}
+          
+          name={"职级分布和和占比"}
+        />
       },
       {
         title: "职类分布和占比",
-        content: <PieCharts />
+        content: <PieCharts 
+          name={"职类分布和占比"}
+          data={Object.entries(data.employ || {}).map((item) => {
+            const [name, value] = item
+            return {
+              value, name,
+            }
+          })}
+        />
       },
     ]
     return (
