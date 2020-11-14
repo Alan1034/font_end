@@ -12,14 +12,39 @@ class Map extends Component {
   state = {
     hexagonLayer: [],
     arclayer: [],
-    switchType: "员工籍贯"
+    switchType: "员工籍贯",
+    timer: null
   };
   switchButton = ["员工籍贯", "员工出差情况"]
 
   componentDidMount() {
     this.getData()
-    //;
+    this.setState({
+      timer: setInterval(this.timerFun, 5000)
+    })
+
   }
+
+  componentWillUnmount() {
+    const { timer } = this.state
+    if (timer != null) {
+
+      clearInterval(this.state.timer);
+
+    }
+  }
+
+  timerFun = () => {
+    const { switchType } = this.state
+    this.switchButton.forEach((item, index) => {
+      if (item === switchType) {
+        this.setState({
+          switchType: this.switchButton[index + 1] || this.switchButton[0]
+        }, this.renderMap())
+      }
+    })
+  }
+
 
   getData = async () => {
     const res = await fetch(`${window.hostProxy}/personnel/data/site`)
@@ -46,13 +71,12 @@ class Map extends Component {
             coordinates: item.center
           },
           to: {
-            name: target.accountSite,
+            name: target.accountSite || "",
             coordinates: [Number(target.siteLng), Number(target.siteLat)]
           },
         })
       }
     })
-    console.log(arcData)
     const arclayer = new ArcLayer({
       id: 'arc-layer',
       data: arcData,
@@ -63,7 +87,6 @@ class Map extends Component {
       getSourceColor: d => [d.inbound / d.outbound * 255, 255, 0, 200],
       getTargetColor: d => [d.outbound / d.inbound * 255, 255, 0, 200],
     });
-    console.log(arclayer)
     const hexagonLayer = new HexagonLayer({
       id: 'hexagon-layer',
       data,
@@ -112,36 +135,6 @@ class Map extends Component {
         ]
       ]
     });
-
-    // const textLayer = new TextLayer({
-    //   id: `text-layer`,
-    //   data: homeJson.map(item => {
-    //     const { name, coordinatesCenter } = item;
-    //     return {
-    //       id: name,
-    //       name,
-    //       coordinates: coordinatesCenter,
-    //     };
-    //   }),
-    //   // pickable: true,
-    //   getPosition: d => d.coordinates,
-    //   getText: d => (/compound/.test(d.name) ? "" : d.name),
-    //   getColor: [0, 0, 0],
-    //   getSize: 19,
-    //   characterSet,
-    //   fontFamily: "MicrosoftYaHei, Helvetica",
-    //   // getAngle: 0,
-    //   // getTextAnchor: 'middle',
-    //   // getAlignmentBaseline: 'center',
-    //   // onHover: info => {
-    //   //   // console.log('chufale')
-    //   //   this.setState({
-    //   //   hoveredObject: info.name,
-    //   //   pointerX: info.x,
-    //   //   pointerY: info.y,
-    //   // })},
-    //   // onHover: info => this.renderTooltip(info.object, info.x, info.y),
-    // });
     this.setState({
       // polygonLayer,
       arclayer,
@@ -153,7 +146,8 @@ class Map extends Component {
     const {
       hexagonLayer,
       arclayer,
-      switchType
+      switchType,
+      timer
     } = this.state;
     // console.log(arclayer)
     let arr = []
@@ -182,7 +176,7 @@ class Map extends Component {
               zoom: 3.30,
               pitch: 40.5,
             }}
-            layers={[...arr]}
+            layers={arr}
             getTooltip={({ object }) => {
               if (!object) {
                 return
@@ -205,7 +199,21 @@ class Map extends Component {
             <StaticMap mapStyle={mapStyle} />
           </DeckGL>
         </div>
-        <div className={styles.switchButton}>
+        <div className={styles.switchButton}
+          onMouseOver={() => {
+
+            if (timer != null) {
+
+              clearInterval(timer);
+
+            }
+          }}
+          onMouseOut={()=>{
+            this.setState({
+              timer: setInterval(this.timerFun, 5000)
+            })
+          }}
+        >
           {this.switchButton.map(item => (
             <div className={styles.button}
               key={item}
@@ -213,7 +221,7 @@ class Map extends Component {
               onClick={() => {
                 this.setState({
                   switchType: item
-                })
+                }, this.renderMap())
               }}
             >{item}</div>
           ))}
