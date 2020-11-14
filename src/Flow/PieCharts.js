@@ -38,7 +38,7 @@ class PieCharts extends Component {
         emphasis: {
           label: {
             show: true,
-            fontSize: '19',
+            fontSize: '15',
             fontWeight: 'bold',
             formatter: '{b}:{c}({d}%)'
           }
@@ -115,7 +115,7 @@ class PieCharts extends Component {
 
     return (
       <div>
-        <div ref={(ref) => this.ref = ref} style={{ width: 350, height: 230 }} />
+        <div ref={(ref) => this.ref = ref} style={{ width: 300, height: 200 }} />
       </div>
     );
   }

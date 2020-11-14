@@ -1,9 +1,25 @@
 .areaInfo {
   display: flex;
   background: #fff;
+  position: relative;
+
   .mapContainer {
-    position: relative;
+
     height: 100%;
   }
 
+  .switchButton {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    display: flex;
+    bottom: 7%;
+    .button{
+      padding: 8px;
+      background-color: darkblue;
+      border-radius: 7px;
+      color: antiquewhite;
+    }
+  }
 }

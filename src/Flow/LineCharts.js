@@ -64,7 +64,7 @@ componentDidUpdate(){
 
     return (
       <div>
-        <div ref={(ref) => this.ref = ref} style={{ width: 350, height: 230 }} />
+        <div ref={(ref) => this.ref = ref} style={{ width: 300, height: 200 }} />
       </div>
     );
   }
