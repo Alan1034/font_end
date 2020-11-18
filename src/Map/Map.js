@@ -47,16 +47,22 @@ class Map extends Component {
 
 
   getData = async () => {
-    const res = await fetch(`${window.hostProxy}/personnel/data/site`)
-    const data = await res.json()
-    if (`${data.errCode}` === "0") {
-      this.setState({
-        data: data.data
-      }, () => { this.renderMap() })
+    try {
+      const res = await fetch(`${window.hostProxy}/personnel/data/site`)
+      const data = await res.json()
+      if (`${data.errCode}` === "0") {
+        this.setState({
+          data: data.data
+        }, () => { this.renderMap() })
+        setTimeout(() => {
+          this.getData()
+        }, 5000);
+      }
+    } catch (error) {
+      console.log(error)
     }
-
   }
-
+  
   renderMap = () => {
     const { data = [] } = this.state;
     const arcData = []

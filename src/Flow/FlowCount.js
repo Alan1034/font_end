@@ -13,17 +13,22 @@ class FlowCount extends Component {
   componentDidMount() {
     this.getData()
   }
-
-  getData=async()=>{
+  getData = async () => {
     // console.log(window.hostProxy)
-    const res =await fetch(`${window.hostProxy}/personnel/data/population`)
-    const data = await res.json()
-    if (`${data.errCode}`=== "0") {
-      this.setState({
-        data:data.data
-      })
+    try {
+      const res = await fetch(`${window.hostProxy}/personnel/data/population`)
+      const data = await res.json()
+      if (`${data.errCode}` === "0") {
+        this.setState({
+          data: data.data
+        })
+        setTimeout(() => {
+          this.getData()
+        }, 5000);
+      }
+    } catch (error) {
+      console.log(error)
     }
-    
   }
 
   render() {

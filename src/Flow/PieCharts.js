@@ -6,7 +6,8 @@ class PieCharts extends Component {
   };
   ref = null
   myChart = null
-  highlightNum=0//图表高亮数据
+  highlightNum = 0//图表高亮数据
+  actioning = false //判断图表是否在轮询
   option = {
     tooltip: {
       trigger: 'item',
@@ -66,13 +67,14 @@ class PieCharts extends Component {
     const { data, name } = this.props
     // console.log(this.props)
     if (data) {
+
       this.option.series[0].data = data
       this.option.series[0].name = name
       this.option.legend.data = data.map(item => item.name)
       // console.log(this.option.series[0])
       this.myChart.setOption(this.option);
       let mouseOver = false
-      this.myChart.on('mouseover', "series", (params)=> {
+      this.myChart.on('mouseover', "series", (params) => {
         mouseOver = true
         this.myChart.dispatchAction({
           type: 'downplay',
@@ -80,10 +82,12 @@ class PieCharts extends Component {
           dataIndex: this.highlightNum
         });
       });
-      this.myChart.on('mouseout', "series", (params)=> {
+      this.myChart.on('mouseout', "series", (params) => {
         mouseOver = false
       });
       const action = (num) => {
+        this.actioning = true
+        const { data } = this.props
         if (!mouseOver) {
           this.myChart.dispatchAction({
             type: 'highlight',
@@ -91,7 +95,7 @@ class PieCharts extends Component {
             dataIndex: num
           });
           this.highlightNum = num
-        } 
+        }
         setTimeout(() => {
           if (!mouseOver) {
             this.myChart.dispatchAction({
@@ -107,10 +111,13 @@ class PieCharts extends Component {
           }
         }, 3000);
       }
-      action(0)
+      if (!this.actioning) {
+        action(this.highlightNum)
+      }
     }
 
   }
+
   render() {
 
     return (
