@@ -30,7 +30,9 @@ class Map extends Component {
     if (timer != null) {
 
       clearInterval(this.state.timer);
-
+      this.setState({
+        timer: null
+      })
     }
   }
 
@@ -56,13 +58,13 @@ class Map extends Component {
         }, () => { this.renderMap() })
         setTimeout(() => {
           this.getData()
-        }, 5000);
+        }, 10000);
       }
     } catch (error) {
       console.log(error)
     }
   }
-  
+
   renderMap = () => {
     const { data = [] } = this.state;
     const arcData = []
@@ -142,7 +144,6 @@ class Map extends Component {
       ]
     });
     this.setState({
-      // polygonLayer,
       arclayer,
       hexagonLayer,
     });
@@ -155,7 +156,6 @@ class Map extends Component {
       switchType,
       timer
     } = this.state;
-    // console.log(arclayer)
     let arr = []
     switch (switchType) {
       case "员工出差情况":
@@ -201,6 +201,18 @@ class Map extends Component {
               }
               return str
             }}
+            onHover={(Function, optional) => {
+              if (Function.picked && timer != null) {
+                clearInterval(timer);
+                this.setState({
+                  timer: null
+                })
+              } else if (!Function.picked && timer === null) {
+                this.setState({
+                  timer: setInterval(this.timerFun, 5000)
+                })
+              }
+            }}
           >
             <StaticMap mapStyle={mapStyle} />
           </DeckGL>
@@ -211,13 +223,17 @@ class Map extends Component {
             if (timer != null) {
 
               clearInterval(timer);
-
+              this.setState({
+                timer: null
+              })
             }
           }}
-          onMouseOut={()=>{
-            this.setState({
-              timer: setInterval(this.timerFun, 5000)
-            })
+          onMouseOut={() => {
+            if (timer === null) {
+              this.setState({
+                timer: setInterval(this.timerFun, 5000)
+              })
+            }
           }}
         >
           {this.switchButton.map(item => (
