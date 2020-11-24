@@ -7,7 +7,7 @@ class PieCharts extends Component {
   ref = null
   myChart = null
   highlightNum = 0//图表高亮数据
-  actioning = false //判断图表是否在轮询
+  actioning=false //判断图表是否在轮询
   option = {
     tooltip: {
       trigger: 'item',
@@ -86,7 +86,7 @@ class PieCharts extends Component {
         mouseOver = false
       });
       const action = (num) => {
-        this.actioning = true
+        this.actioning=true
         const { data } = this.props
         if (!mouseOver) {
           this.myChart.dispatchAction({

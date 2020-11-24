@@ -201,13 +201,13 @@ class Map extends Component {
               }
               return str
             }}
-            onHover={(Function, optional) => {
+            onHover={(Function, optional)=>{
               if (Function.picked && timer != null) {
                 clearInterval(timer);
                 this.setState({
                   timer: null
                 })
-              } else if (!Function.picked && timer === null) {
+              } else if (!Function.picked && timer === null){
                 this.setState({
                   timer: setInterval(this.timerFun, 5000)
                 })
@@ -228,7 +228,7 @@ class Map extends Component {
               })
             }
           }}
-          onMouseOut={() => {
+          onMouseOut={()=>{
             if (timer === null) {
               this.setState({
                 timer: setInterval(this.timerFun, 5000)
